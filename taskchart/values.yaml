@@ -1,0 +1,29 @@
+
+#Deployment info
+appName: devops-task
+namespace: default 
+replicaCount: 1
+
+#Image info
+image:
+  # replace <account-id> with your account id, <region> with your region and <repo-name> with your repository name.
+  repo: <account-id>.dkr.ecr.<region>.amazonaws.com/<repo-name>
+  tag: latest
+  imagePullPolicy: IfNotPresent
+  ports:
+    containerPort: 5000
+
+#Service info
+Service:
+  serviceName: task-service
+  ports:
+    protocol: TCP
+    port: 5000
+
+#Ingress info
+Ingress:
+  ingressName: devopstask-ingress
+ingress:
+  enabled: true
+
+

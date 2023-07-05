@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.appName }}
+  labels:
+    app: {{ .Values.appName }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.appName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.appName }}
+    spec:
+      containers:
+      - name: {{ .Values.appName }}
+        image: "{{ .Values.image.repo }}:{{ .Values.image.tag }}"  #image name = repo name + tag
+        imagePullPolicy: {{ .Values.image.imagePullPolicy }}
+        ports:
+        - containerPort: {{ .Values.image.ports.containerPort }}
+       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.Service.serviceName }}
+spec: 
+  type: LoadBalancer
+  selector:
+    app: {{ .Values.appName }}
+  ports:
+    - protocol: {{ .Values.Service.ports.protocol }}
+      port: {{ .Values.Service.ports.port }}
+      targetPort: {{ .Values.image.ports.containerPort }}
